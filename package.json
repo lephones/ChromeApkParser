@@ -1,0 +1,16 @@
+{
+  "name": "fast-apk-parser",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Chrome Extension for selective, zero-extraction Android APK parsing",
+  "type": "module",
+  "scripts": {
+    "test": "node test/test-local.js",
+    "build": "node scripts/pack.js",
+    "build:alipay": "node build-alipay-card.js",
+    "gen:icons": "node generate-icons.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <g fill="#2cb869">
+    <!-- 1. Wrench Tool (Top Area) -->
+    <path transform="translate(64, 28) rotate(-45)" 
+          d="M -5 30
+             C -5 33 5 33 5 30
+             L 5 0
+             C 8 1 12 -2 14 -7
+             C 16 -13 13 -23 4 -25
+             L 4 -12
+             C 4 -10 2 -9 0 -9
+             C -2 -9 -4 -10 -4 -12
+             L -4 -25
+             C -13 -23 -16 -13 -14 -7
+             C -12 -2 -8 1 -5 0
+             Z" />
+
+    <!-- 2. Massive 'APK' Typography (58px Full Bleed) -->
+    <text x="64" y="96" 
+          text-anchor="middle" 
+          dominant-baseline="central"
+          font-family="system-ui, -apple-system, 'SF Pro Display', 'Segoe UI', Impact, Roboto, sans-serif" 
+          font-weight="950" 
+          letter-spacing="-1px"
+          font-size="58">APK</text>
+  </g>
+</svg>

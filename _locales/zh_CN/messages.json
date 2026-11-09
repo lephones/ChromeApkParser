@@ -1,0 +1,14 @@
+{
+  "extension_name": {
+    "message": "Fast Apk Parser - 极速 APK 与 AAB 解析器",
+    "description": "Chrome 扩展标题"
+  },
+  "extension_description": {
+    "message": "极速零解压解析 Android APK 与 AAB 元数据、包名、启动类(MainActivity)、版本、权限、架构支持、签名指纹(MD5/SHA1/SHA256)及高亮 AndroidManifest.xml。",
+    "description": "Chrome 扩展描述"
+  },
+  "action_title": {
+    "message": "打开 Fast Apk Parser",
+    "description": "鼠标悬停在扩展图标上时显示的提示文案"
+  }
+}

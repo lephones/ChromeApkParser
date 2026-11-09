@@ -1,0 +1,14 @@
+{
+  "extension_name": {
+    "message": "Fast Apk Parser - Instant APK & AAB Inspector",
+    "description": "The title of the extension shown in Chrome"
+  },
+  "extension_description": {
+    "message": "Instant zero-extraction APK & AAB inspector. Parse package, MainActivity, SDK, permissions, signatures & AndroidManifest.xml.",
+    "description": "The description of the extension shown in Chrome"
+  },
+  "action_title": {
+    "message": "Fast Apk Parser",
+    "description": "Tooltip shown when hovering over the extension icon"
+  }
+}

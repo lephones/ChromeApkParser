@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Apk Parser Studio - Instant APK & AAB Inspector</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="fullscreen">
+  <div class="app-container">
+    <header class="header-bar">
+      <div class="logo-group">
+        <img src="../icons/icon48.png" alt="logo" class="logo-img">
+        <div>
+          <div class="logo-title" id="logoTitle">Fast Apk Parser Studio</div>
+          <div class="logo-subtitle" id="logoSubtitle" style="font-size: 12px; color: var(--text-muted);">Instant zero-extraction APK & AAB inspector in browser</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="coffeeBtn" class="btn-coffee" title="Buy me a coffee / 请作者喝杯咖啡">
+          <span id="coffeeBtnText">☕ Buy me a coffee</span>
+        </button>
+        <button id="langToggleBtn" class="btn-icon" title="Switch Language / 切换语言">
+          <span id="langBtnText">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="input-panel">
+      <div id="dropZone" class="drop-zone">
+        <input type="file" id="fileInput" accept=".apk,.aab" style="display: none;">
+        <div class="drop-icon">📦</div>
+        <div class="drop-title" id="dropTitle">Drop local APK / AAB file here, or click to browse</div>
+        <div class="drop-subtitle" id="dropSubtitle">Supports APK & AAB · Zero-extraction · 100% Client-side</div>
+      </div>
+
+      <div class="url-input-group">
+        <input type="text" id="urlInput" class="url-input" placeholder="Enter direct APK / AAB download URL (HTTP/HTTPS)...">
+        <button id="parseUrlBtn" class="btn-primary">Inspect Now</button>
+      </div>
+
+      <div class="quick-samples">
+        <span id="samplePrefix">Quick samples:</span>
+        <span class="sample-link" id="sample1Btn">Telegram APK</span>
+      </div>
+    </section>
+
+    <div id="statusBox" class="status-box">
+      <div id="statusText">Preparing inspection...</div>
+      <div class="progress-bar-container">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- 竖直流式结果展示区（彻底解决 SHA-256 挤压排版问题） -->
+    <main id="resultSection" class="result-section">
+      <div class="perf-badge" id="perfBadge">
+        <span>⚡ Catalog parsed · Instant inspection</span>
+      </div>
+
+      <!-- 1. 应用基本头部 -->
+      <div class="app-header-card">
+        <div class="app-icon-wrapper">
+          <img id="appIcon" src="" alt="App Icon" class="app-icon">
+          <button id="downloadIconBtn" class="icon-download-btn" title="Download Icon">💾</button>
+        </div>
+        <div class="app-meta-box">
+          <div class="app-title-row">
+            <h2 id="appName" class="app-name">App Name</h2>
+          </div>
+          <div class="pkg-name-row">
+            <span id="pkgName">com.example.app</span>
+            <span class="copy-icon" id="copyPkgBtn" title="Copy package name">📋</span>
+          </div>
+
+          <!-- 启动入口 (MainActivity) -->
+          <div class="main-activity-row" id="mainActivityRow" style="display: none;">
+            <span id="mainActivityLabel" style="font-weight: 600;">Main Activity:</span>
+            <span id="mainActivityText" class="main-activity-text">-</span>
+            <span class="copy-icon" id="copyMainActivityBtn" title="Copy launcher activity">📋</span>
+          </div>
+
+          <div class="store-status-row">
+            <a id="googlePlayLink" href="#" target="_blank" class="store-pill">
+              <span>🛍️ Google Play Store</span>
+            </a>
+            <a id="coolapkLink" href="#" target="_blank" class="store-pill">
+              <span>📱 Coolapk Search</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 核心参数网格 -->
+      <div class="grid-cards">
+        <div class="info-card">
+          <span class="info-label">APP VERSION</span>
+          <span id="appVersion" class="info-val">v1.0.0</span>
+          <span id="versionCode" class="info-sub">VersionCode: 1</span>
+        </div>
+
+        <div class="info-card">
+          <span class="info-label">COMPATIBILITY</span>
+          <span id="targetSdk" class="info-val">Android 14 (API 34)</span>
+          <span id="minSdk" class="info-sub">Min Supported: Android 8.0</span>
+        </div>
+
+        <div class="info-card">
+          <span class="info-label">ARCHITECTURES (ABI)</span>
+          <div class="badges-container" id="abiBadges">
+            <span class="badge abi">arm64-v8a</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <span class="info-label">PACKAGE & SIGNATURE</span>
+          <span id="fileSize" class="info-val">0 MB</span>
+          <div class="badges-container" id="sigBadges">
+            <span class="badge v2">v2 Signature</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 签名指纹卡片（宽屏展开，SHA-256 舒展平铺） -->
+      <div class="sign-card">
+        <div class="sign-row">
+          <span class="sign-label">MD5</span>
+          <code id="signMd5" class="sign-hash">-</code>
+          <button class="btn-icon" id="copyMd5Btn">Copy</button>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">SHA-1</span>
+          <code id="signSha1" class="sign-hash">-</code>
+          <button class="btn-icon" id="copySha1Btn">Copy</button>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">SHA-256</span>
+          <code id="signSha256" class="sign-hash">-</code>
+          <button class="btn-icon" id="copySha256Btn">Copy</button>
+        </div>
+      </div>
+
+      <!-- 4. 权限与 Manifest Tab 切换 -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="permissions">Permissions (<span id="permCount">0</span>)</button>
+        <button class="tab-btn" data-tab="manifest">AndroidManifest.xml</button>
+      </div>
+
+      <!-- 权限列表 Tab 内容 -->
+      <div id="tabPermissions" class="tab-content active">
+        <input type="text" id="permSearch" class="perm-search-box" placeholder="Search permissions or keywords (e.g. location, camera)...">
+        <div class="perm-list" id="permList"></div>
+      </div>
+
+      <!-- Manifest 高亮代码 Tab 内容 -->
+      <div id="tabManifest" class="tab-content">
+        <div class="manifest-toolbar">
+          <span id="manifestToolbarTitle">Decompiled AndroidManifest.xml (with IDE syntax highlighting)</span>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-icon" id="copyXmlBtn">📋 Copy All</button>
+            <button class="btn-icon" id="downloadXmlBtn">💾 Export XML</button>
+          </div>
+        </div>
+        <pre class="xml-container"><code id="xmlCode"></code></pre>
+      </div>
+
+      <!-- 赞助支持横幅 -->
+      <div class="sponsor-banner">
+        <div class="sponsor-banner-left">
+          <div class="sponsor-banner-icon">☕</div>
+          <div>
+            <div id="sponsorBannerTitle" class="sponsor-banner-title">Enjoying Fast Apk Parser? Buy me a coffee ☕</div>
+            <div id="sponsorBannerSub" class="sponsor-banner-sub">Zero-extraction client-side APK inspector. If it saved your day, your support is truly appreciated!</div>
+          </div>
+        </div>
+        <button id="sponsorBannerBtn" class="btn-sponsor-now">💖 Sponsor Now</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- 赞助支持弹窗 Modal -->
+  <div id="sponsorModal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span>☕</span>
+          <span id="sponsorModalTitle">Buy Me a Coffee</span>
+        </div>
+        <button id="closeSponsorModal" class="modal-close-btn" title="Close / 关闭">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="sponsorModalDesc" class="modal-desc">
+          If Fast Apk Parser saved your valuable time, consider buying me a coffee! Your support fuels ongoing open-source features & updates ❤️
+        </p>
+
+        <!-- 渠道切换 Tab -->
+        <div class="sponsor-tabs">
+          <button class="sponsor-tab-btn active" data-method="paypal" id="tabPaypalBtn">PayPal</button>
+          <button class="sponsor-tab-btn" data-method="alipay" id="tabAlipayBtn">Alipay</button>
+          <button class="sponsor-tab-btn" data-method="wechat" id="tabWechatBtn">WeChat Pay</button>
+        </div>
+
+        <!-- PayPal 渠道 -->
+        <div class="sponsor-content active" id="contentPaypal">
+          <div id="paypalIntro" class="channel-intro">Quick sponsorship via PayPal (paypal.me/lephone)</div>
+          <div class="paypal-box">
+            <a href="https://paypal.me/lephone" target="_blank" class="btn-paypal-me" id="paypalBtnMe">
+              <span>💳 Donate via PayPal.me/lephone</span>
+            </a>
+            <button class="btn-copy-paypal" id="copyPaypalLinkBtn">📋 Copy Link (paypal.me/lephone)</button>
+          </div>
+        </div>
+
+        <!-- 支付宝渠道 -->
+        <div class="sponsor-content" id="contentAlipay">
+          <div id="alipayIntro" class="channel-intro">Open Alipay mobile app and scan the QR code to sponsor</div>
+          <div class="qr-card">
+            <img src="../icons/alipay-qr.jpg" alt="Alipay QR" class="qr-img" id="alipayQrImg">
+            <div id="qrTipAlipay" class="qr-tip">支付宝扫一扫向我付款</div>
+          </div>
+        </div>
+
+        <!-- 微信支付渠道 -->
+        <div class="sponsor-content" id="contentWechat">
+          <div id="wechatIntro" class="channel-intro">Open WeChat mobile app and scan the QR code to sponsor</div>
+          <div class="qr-card">
+            <img src="../icons/wechat-qr.jpg" alt="WeChat QR" class="qr-img" id="wechatQrImg">
+            <div id="qrTipWechat" class="qr-tip">微信扫一扫赞赏码</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
