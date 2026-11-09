@@ -67,6 +67,8 @@ Inspect local or remote APK / AAB files in milliseconds directly in your browser
 如果您觉得 **Fast Apk Parser** 为您节省了宝贵的时间，欢迎请作者喝杯咖啡！
 
 - **PayPal**: [paypal.me/lephone](https://paypal.me/lephone)
-- **支付宝 (Alipay)**: ![点击查看收款码](icons/alipay-qr.jpg) 
-- **微信支付 (WeChat)**: ![点击查看微信赞赏码](icons/wechat-qr.jpg)
+- **支付宝 (Alipay)**:
+  ![点击查看收款码](icons/alipay-qr.jpg) 
+- **微信支付 (WeChat)**:
+  ![点击查看微信赞赏码](icons/wechat-qr.jpg)
 
